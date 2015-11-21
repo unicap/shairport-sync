@@ -46,6 +46,11 @@ if USE_PULSE
 shairport_sync_SOURCES += audio_pulse.c
 endif
 
+if USE_JACK
+shairport_sync_SOURCES += audio_jack.c
+endif
+
+
 if USE_DNS_SD
 shairport_sync_SOURCES += mdns_dns_sd.c
 endif

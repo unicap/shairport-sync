@@ -67,6 +67,14 @@ AM_CONDITIONAL([USE_STDOUT], [test "x$with_stdout" = "xyes" ])
 AC_ARG_WITH([pipe],[  --with-pipe = include the pipe audio back end ],[ AC_MSG_RESULT(>>Including the pipe audio back end)  AC_DEFINE([CONFIG_PIPE], 1, [Needed by the compiler.]) ], )
 AM_CONDITIONAL([USE_PIPE], [test "x$with_pipe" = "xyes" ])
 
+# Look for jack flag
+AC_ARG_WITH(jack, [  --with-jack = choose native jack API support -- N.B. no synchronisation -- so underflow or overflow is inevitable!], [
+  AC_MSG_RESULT(>>Including a jack back end -- N.B. no synchronisation -- so underflow or overflow is inevitable!)
+  HAS_JACK=1
+  AC_DEFINE([CONFIG_JACK], 1, [Needed by the compiler.])
+  AC_CHECK_LIB([jack], [jack_client_open], , AC_MSG_ERROR(jack support requires the libjack-dev library!))], )
+AM_CONDITIONAL([USE_JACK], [test "x$HAS_JACK" = "x1"])
+
 # Check to see if we should include the System V initscript
 
 AC_ARG_WITH([systemv],

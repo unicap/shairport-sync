@@ -50,6 +50,9 @@ extern audio_output audio_pipe;
 #ifdef CONFIG_STDOUT
 extern audio_output audio_stdout;
 #endif
+#ifdef CONFIG_JACK
+extern audio_output audio_jack;
+#endif
 
 static audio_output *outputs[] = {
 #ifdef CONFIG_SNDIO
@@ -67,11 +70,14 @@ static audio_output *outputs[] = {
 #ifdef CONFIG_DUMMY
     &audio_dummy,
 #endif
-#ifdef CONFIG_PIPE 
+#ifdef CONFIG_PIPE
     &audio_pipe,
 #endif
 #ifdef CONFIG_STDOUT
     &audio_stdout,
+#endif
+#ifdef CONFIG_JACK
+    &audio_jack,
 #endif
     NULL};
 
