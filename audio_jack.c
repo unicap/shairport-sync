@@ -131,6 +131,7 @@ static void start(int sample_rate) {
 	 * "input" to the backend, and capture ports are "output" from
 	 * it.
 	 */
+
 	ports = jack_get_ports (client, portspec, NULL,
 				JackPortIsInput);
 	if (ports == NULL) {
@@ -158,9 +159,6 @@ output_jack_process (jack_nframes_t n_out_frames, void *arg)
 	size_t nframes = (size_t)(n_out_frames *
 				  source_samplerate / target_samplerate + 0.5);
 
-	out1 = malloc (nframes * sizeof(float));
-	out2 = malloc (nframes * sizeof(float));
-
 	jack_out1 = (jack_default_audio_sample_t*)
 		jack_port_get_buffer (output_port1, nframes);
 	jack_out2 = (jack_default_audio_sample_t*)
@@ -184,6 +182,8 @@ output_jack_process (jack_nframes_t n_out_frames, void *arg)
 		return 0;
 	}
 
+	out1 = malloc (nframes * sizeof(float));
+	out2 = malloc (nframes * sizeof(float));
 	if ((output_readp + nframes) > output_buffer_size ){
 		int frames_to_copy = output_buffer_size - output_readp;
 		int remain = nframes - frames_to_copy;
@@ -221,6 +221,10 @@ output_jack_process (jack_nframes_t n_out_frames, void *arg)
 			      out2, nframes, NULL,
 			      jack_out2, n_out_frames, &odone,
 			      NULL, NULL, NULL);
+
+	free (out1);
+	free (out2);
+
 	return 0;
 }
 
@@ -275,6 +279,7 @@ static void play(short buf[], int samples) {
 }
 
 static void stop(void) {
+	printf ("STOP\n");
 }
 
 static int init(int argc, char **argv) {
